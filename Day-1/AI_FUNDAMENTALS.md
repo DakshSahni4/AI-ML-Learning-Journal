@@ -26,3 +26,28 @@ Embeddings are used to convert unstructured text data into structured numerical 
 A Vector Database is a specialized database designed to store, manage, and search vector embeddings efficiently. Instead of searching for exact keyword matches, it finds data that is semantically similar by comparing the distance between embedding vectors.
 
 A vector database is essential in AI applications because embeddings are high-dimensional numerical vectors, and traditional databases are not optimized to search through them efficiently. It enables fast similarity search, making it possible to retrieve the most relevant documents, images, or other data based on meaning rather than exact words.
+
+# What is a RAG?
+
+RAG (Retrieval-Augmented Generation) is an AI technique that improves the accuracy of a Large Language Model (LLM) by allowing it to retrieve relevant information from an external knowledge source before generating a response
+
+Instead of relying only on what it learned during training, the LLM first searches for relevant information and then uses that information to answer the user's question
+
+**Why do we need RAG?**
+
+LLMs has two major limitations:
+- Knowledge Cutoff - it only knows information it was trained on.
+- Hallucinations - it can confidently genrate incorrect information.
+
+To overcome these 2 limitations RAG is used which gives LLM the information required to answer the prompt
+
+**How RAG works?**
+1. Gather all the documents you want the LLM to know
+2. Split the Documents into chunks
+3. Convert each chunk into a embedding
+4. Store embedding in a Vector Database
+5. User asks a Question ?
+6. Convert the question into an embedding
+7. Similiarity Search
+8. Send retrieved chunks to the LLM
+9. Genrate the final answer
