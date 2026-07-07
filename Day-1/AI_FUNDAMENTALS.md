@@ -20,3 +20,9 @@ Embeddings are dense vector representations of words in a language that captures
 **Why are embeddings useful?**
 
 Embeddings are used to convert unstructured text data into structured numerical vectors that deep learning models can understand and process. Since deep learning models work with numbers rather than raw text, embeddings provide a way to represent the meaning of words, sentences, or documents in a numerical form.
+
+# What is a Vector Database?
+
+A Vector Database is a specialized database designed to store, manage, and search vector embeddings efficiently. Instead of searching for exact keyword matches, it finds data that is semantically similar by comparing the distance between embedding vectors.
+
+A vector database is essential in AI applications because embeddings are high-dimensional numerical vectors, and traditional databases are not optimized to search through them efficiently. It enables fast similarity search, making it possible to retrieve the most relevant documents, images, or other data based on meaning rather than exact words.
