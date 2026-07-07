@@ -51,3 +51,10 @@ To overcome these 2 limitations RAG is used which gives LLM the information requ
 7. Similiarity Search
 8. Send retrieved chunks to the LLM
 9. Genrate the final answer
+
+# Difference Between Machine Learning and Genrative Ai
+
+**Machine Learning** is a branch of artificial intelligence that focuses on training models to learn patterns from data so they can make predictions, classify information, or support decision-making. Its primary goal is to analyze existing data and produce accurate outputs such as predictions, recommendations, or classifications. Common applications include spam detection, fraud detection, demand forecasting, and recommendation systems.
+
+**Generative AI** is a specialized area of artificial intelligence that goes beyond analyzing data by creating new content. Instead of only predicting outcomes, it generates text, images, audio, videos, code, and other forms of content based on the patterns it has learned from large datasets. Models such as Large Language Models (LLMs) and diffusion models are examples of Generative AI. Applications include AI chatbots, image generation and code assistants.
+ 
