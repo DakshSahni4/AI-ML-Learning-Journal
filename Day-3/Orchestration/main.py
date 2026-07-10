@@ -45,6 +45,14 @@ def main():
     print("\nHealth Check")
     print(response)
 
+    response = orchestrator.execute(
+        provider_name="openai",
+        task="Converse",
+        data=""
+    )
+
+    print("\nInvalid Task")
+    print(response)
 
 if __name__ == "__main__":
     main()
