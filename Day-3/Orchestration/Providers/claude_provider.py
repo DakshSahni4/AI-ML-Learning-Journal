@@ -26,7 +26,7 @@ class ClaudeProvider(BaseAIProvider):
 
     def classify(self, text: str):
         start = time.time()
-
+        
         return {
             "success": True,
             "provider": "Claude",

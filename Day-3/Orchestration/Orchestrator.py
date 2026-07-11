@@ -14,14 +14,34 @@ class AIOrchestrator:
             "claude": ClaudeProvider(),
             "gemini": GeminiProvider()
         }
+        
+        self.mapping = {
+            "generate_text": "openai",
+            "summarize": "claude",
+            "classify" : "gemini",
+            "health_check":"openai"
+        }
 
-    def execute(self, provider_name, task, data):
+    def execute(self, task, data):
 
         logger.info("Request received")
 
         try:
 
-            provider = self.providers.get(provider_name.lower())
+            # provider = self.providers.get(provider_name.lower())
+
+            provider_name = self.mapping.get(task)
+
+            if provider_name is None:
+                logger.error("Invalid Task")
+
+                return {
+                    "success": False,
+                    "provider":None,
+                    "error":"Invalid Task"
+                }
+            
+            provider = self.providers.get(provider_name)
 
             if provider is None:
 
@@ -35,27 +55,8 @@ class AIOrchestrator:
 
             logger.info(f"Selected Provider : {provider_name}")
 
-            if task == "generate_text":
-                response = provider.generate_text(data)
-
-            elif task == "summarize":
-                response = provider.summarize(data)
-
-            elif task == "classify":
-                response = provider.classify(data)
-
-            elif task == "health_check":
-                response = provider.health_check()
-
-            else:
-
-                logger.error("Invalid Task")
-
-                return {
-                    "success": False,
-                    "provider": provider_name,
-                    "error": "Invalid task"
-                }
+            method = getattr(provider,task)
+            response = method(data)
 
             logger.info("Execution completed")
 

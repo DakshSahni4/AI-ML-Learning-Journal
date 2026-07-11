@@ -7,7 +7,6 @@ def main():
 
     # Generate Text
     response = orchestrator.execute(
-        provider_name="openai",
         task= "generate_text",
         data=" Write a poem about AI"
     )
@@ -17,7 +16,6 @@ def main():
 
     # Summarize
     response = orchestrator.execute(
-        provider_name="claude",
         task="summarize",
         data= " Artificial Intelligence is transforming industries"
     )
@@ -27,7 +25,6 @@ def main():
 
     # Classify
     response = orchestrator.execute(
-        provider_name="gemini",
         task="classify",
         data= " This movie is amazing"
     )
@@ -37,7 +34,6 @@ def main():
 
     # Health Check
     response = orchestrator.execute(
-        provider_name="openai",
         task="health_check",
         data=""
     )
@@ -46,7 +42,6 @@ def main():
     print(response)
 
     response = orchestrator.execute(
-        provider_name="openai",
         task="Converse",
         data=""
     )
