@@ -1,16 +1,32 @@
 import time
 from Providers.base_provider import BaseAIProvider
 
+from google import genai
+from dotenv import load_dotenv
+import os 
+
+load_dotenv()
+
 
 class GeminiProvider(BaseAIProvider):
+
+    def __init__(self):
+        self.client = genai.Client(
+            api_key = os.getenv("GEMINI_API_KEY")
+        )
 
     def generate_text(self, prompt: str):
         start = time.time()
 
+        response = self.client.models.generate_content(
+            model = "gemini-2.5-flash",
+            contents=prompt
+        )
+
         return {
             "success": True,
             "provider": "Gemini",
-            "output": f"Generated using Gemini: {prompt}",
+            "output": response.text,
             "execution_time": round(time.time() - start, 4)
         }
 

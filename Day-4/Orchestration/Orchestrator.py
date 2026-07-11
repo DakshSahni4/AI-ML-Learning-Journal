@@ -16,7 +16,7 @@ class AIOrchestrator:
         }
 
         self.mapping = {
-            "generate_text": "openai",
+            "generate_text": "gemini",
             "summarize": "claude",
             "classify" : "gemini",
             "health_check":"openai"
