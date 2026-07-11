@@ -14,7 +14,7 @@ class AIOrchestrator:
             "claude": ClaudeProvider(),
             "gemini": GeminiProvider()
         }
-        
+
         self.mapping = {
             "generate_text": "openai",
             "summarize": "claude",
@@ -55,8 +55,14 @@ class AIOrchestrator:
 
             logger.info(f"Selected Provider : {provider_name}")
 
+                
+
             method = getattr(provider,task)
-            response = method(data)
+            if task == "health_check":
+                print("yess i am here")
+                response = method()
+            else:
+                response = method(data)
 
             logger.info("Execution completed")
 
