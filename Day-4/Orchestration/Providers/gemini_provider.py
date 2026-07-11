@@ -33,20 +33,30 @@ class GeminiProvider(BaseAIProvider):
     def summarize(self, text: str):
         start = time.time()
 
+        response = self.client.models.generate_content(
+            model = "gemini-2.5-flash",
+            contents=f"Summarize this: {text}"
+        )
+
         return {
             "success": True,
             "provider": "Gemini",
-            "output": "Summary generated using Gemini",
+            "output": response.text,
             "execution_time": round(time.time() - start, 4)
         }
 
     def classify(self, text: str):
         start = time.time()
 
+        response = self.client.models.generate_content(
+            model = "gemini-2.5-flash",
+            contents = f"Classify the text into Negative , Positive or Neutral {text}"
+
+        )
         return {
             "success": True,
             "provider": "Gemini",
-            "output": "Classification using Gemini",
+            "output": response.text,
             "execution_time": round(time.time() - start, 4)
         }
 
