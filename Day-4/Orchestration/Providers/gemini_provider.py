@@ -1,4 +1,5 @@
 import time
+import json
 from Providers.base_provider import BaseAIProvider
 
 from google import genai
@@ -15,7 +16,7 @@ class GeminiProvider(BaseAIProvider):
             api_key = os.getenv("GEMINI_API_KEY")
         )
 
-    def generate_text(self, prompt: str):
+    def generateText(self, prompt: str):
         start = time.time()
 
         response = self.client.models.generate_content(
@@ -30,37 +31,32 @@ class GeminiProvider(BaseAIProvider):
             "execution_time": round(time.time() - start, 4)
         }
 
-    def summarize(self, text: str):
+    def generateJSON(self,prompt: str):
         start = time.time()
 
         response = self.client.models.generate_content(
             model = "gemini-2.5-flash",
-            contents=f"Summarize this: {text}"
+            contents=f"""
+                        Return ONLY valid JSON.
+                        {prompt}
+                        """,
+            config={
+        "response_mime_type": "application/json"
+    }
         )
-
+        
         return {
             "success": True,
             "provider": "Gemini",
-            "output": response.text,
+            "output": json.loads(response.text),
             "execution_time": round(time.time() - start, 4)
         }
 
-    def classify(self, text: str):
-        start = time.time()
-
-        response = self.client.models.generate_content(
-            model = "gemini-2.5-flash",
-            contents = f"Classify the text into Negative , Positive or Neutral {text}"
-
-        )
-        return {
-            "success": True,
-            "provider": "Gemini",
-            "output": response.text,
-            "execution_time": round(time.time() - start, 4)
-        }
-
-    def health_check(self):
+    def getModelInfo(self,data=None):
+        pass
+    
+    
+    def healthCheck(self,data=None):
         start = time.time()
 
         return {

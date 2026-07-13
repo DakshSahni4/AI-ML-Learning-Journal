@@ -5,36 +5,34 @@ def main():
 
     orchestrator = AIOrchestrator()
 
-    # Generate Text
     response = orchestrator.execute(
-        task= "generate_text",
+        task= "generateText",
         data=" Write a poem about AI"
     )
 
     print("\nGenerate Text")
     print(response)
 
-    # Summarize
+
     response = orchestrator.execute(
-        task="summarize",
+        task="getModelInfo",
         data= " Artificial Intelligence is transforming industries"
     )
 
-    print("\nSummarize")
+    print("\n Get Model Info")
     print(response)
 
-    # Classify
+
     response = orchestrator.execute(
-        task="classify",
+        task="generateJSON",
         data= " This movie is amazing"
     )
 
-    print("\nClassify")
+    print("\nGenerate JSON")
     print(response)
 
-    # Health Check
     response = orchestrator.execute(
-        task="health_check",
+        task="healthCheck",
         data=""
     )
 

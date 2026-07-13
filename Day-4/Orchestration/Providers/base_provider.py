@@ -4,17 +4,17 @@ from abc import ABC, abstractmethod
 class BaseAIProvider(ABC):
 
     @abstractmethod
-    def generate_text(self, prompt: str):
+    def generateText(self, prompt: str):
         pass
 
     @abstractmethod
-    def summarize(self, text: str):
+    def generateJSON(self, text: str):
         pass
 
     @abstractmethod
-    def classify(self, text: str):
+    def getModelInfo(self,data=None):
         pass
 
     @abstractmethod
-    def health_check(self):
+    def healthCheck(self,data=None):
         pass

@@ -16,10 +16,10 @@ class AIOrchestrator:
         }
 
         self.mapping = {
-            "generate_text": "openai",
-            "summarize": "claude",
-            "classify" : "gemini",
-            "health_check":"openai"
+            "generateText": "openai",
+            "generateJSON": "claude",
+            "getModelInfo" : "gemini",
+            "healthCheck":"gemini"
         }
 
     def execute(self, task, data):
@@ -58,11 +58,7 @@ class AIOrchestrator:
                 
 
             method = getattr(provider,task)
-            if task == "health_check":
-                print("yess i am here")
-                response = method()
-            else:
-                response = method(data)
+            response = method(data)
 
             logger.info("Execution completed")
 
