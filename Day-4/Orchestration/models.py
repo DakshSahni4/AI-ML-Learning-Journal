@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass,field
 
 @dataclass
 class AIResponse:
@@ -17,3 +17,9 @@ class ExecutionLog:
     execution_time: float
     success:bool
     error: str | None = None
+
+@dataclass
+class ValidationResult:
+    valid:bool
+    errors: list[str] = field(default_factory = list)
+    
