@@ -1,4 +1,10 @@
+from datetime import datetime
+import uuid
+
 from Orchestrator import AIOrchestrator
+from models import ExecutionLog
+from ExecutionLogger.execution_logger import ExecutionLogger
+
 
 
 def main():
@@ -46,6 +52,37 @@ def main():
 
     print("\nInvalid Task")
     print(response)
+
+def debug():
+    logger = ExecutionLogger()
+
+    log = ExecutionLog(
+
+        execution_id=str(uuid.uuid4()),
+
+        timestamp=str(datetime.now()),
+
+        module="generateText",
+
+        provider="gemini",
+
+        model="gemini-2.5-flash",
+
+        execution_time=0.82,
+
+        success=True,
+
+        error=None
+    )
+
+    logger.log(log)
+
+    print("Execution logged successfully!")
+
+    print(logger.filterByDate("2026-07-13"))
+    print(logger.filterByStatus(False))
+    print(logger.filterByStatus(True))
+    print(logger.filterByProvider("gemini"))
 
 if __name__ == "__main__":
     main()
