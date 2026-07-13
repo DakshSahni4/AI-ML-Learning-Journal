@@ -4,9 +4,7 @@ import uuid
 from Orchestrator import AIOrchestrator
 from models import ExecutionLog
 from ExecutionLogger.execution_logger import ExecutionLogger
-
-
-
+from ResponseValidator.validator import ResponseValidator
 def main():
 
     orchestrator = AIOrchestrator()

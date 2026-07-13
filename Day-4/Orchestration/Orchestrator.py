@@ -5,10 +5,13 @@ import uuid
 from Providers.claude_provider import ClaudeProvider
 from Providers.openai_provider import OpenAIProvider
 from Providers.gemini_provider import GeminiProvider
+
 from ExecutionLogger.execution_logger import ExecutionLogger
+from ResponseValidator.validator import ResponseValidator
 
 from models import AIResponse
 from models import ExecutionLog
+
 from logger import logger
 
 
@@ -29,6 +32,7 @@ class AIOrchestrator:
             "healthCheck":"openai"
         }
         self.execution_logger  = ExecutionLogger()
+        self.validator = ResponseValidator()
 
     def execute(self, task, data):
 
@@ -75,7 +79,7 @@ class AIOrchestrator:
                 )
 
                 self.execution_logger.log(log)
-                
+
                 return  AIResponse(
                     success=False,
                     provider_name=provider_name,
@@ -91,6 +95,42 @@ class AIOrchestrator:
             start = time.time()
             output = method(data)
             end = time.time()
+
+            if task in ("generateText", "generateJSON"):
+
+                validation = self.validator.validate(
+                    output,
+                    validate_json=(task == "generateJSON")
+                )
+
+                if not validation.valid:
+
+                    log = ExecutionLog(
+
+                        execution_id=str(uuid.uuid4()),
+
+                        timestamp=datetime.now().isoformat(),
+
+                        module=task,
+
+                        provider=provider_name,
+
+                        execution_time=end-start,
+
+                        success=False,
+
+                        error=", ".join(validation.errors)
+                    )
+                    self.execution_logger.log(log)
+
+                    return AIResponse(
+                        success=False,
+                        provider_name=provider_name,
+                        output=None,
+                        execution_time=end-start,
+                        error=validation.errors
+                    )
+            
             log = ExecutionLog(
 
                     execution_id=str(uuid.uuid4()),
@@ -107,7 +147,7 @@ class AIOrchestrator:
 
                     error=None
                 )
-            self.execution_logger(log)
+            self.execution_logger.log(log)
             logger.info("Execution completed")
 
             return AIResponse(
