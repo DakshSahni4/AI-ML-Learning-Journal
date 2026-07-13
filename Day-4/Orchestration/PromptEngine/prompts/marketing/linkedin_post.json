@@ -1,0 +1,5 @@
+{
+    "v1": {
+        "template": "Create a LinkedIn post for {{company_name}} targeting {{target_audience}} with the goal {{goal}}."
+    }
+}
