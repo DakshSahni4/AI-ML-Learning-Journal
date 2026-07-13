@@ -1,6 +1,10 @@
+import time
+
 from Providers.claude_provider import ClaudeProvider
 from Providers.openai_provider import OpenAIProvider
 from Providers.gemini_provider import GeminiProvider
+
+from models import AIResponse
 
 from logger import logger
 
@@ -16,10 +20,10 @@ class AIOrchestrator:
         }
 
         self.mapping = {
-            "generateText": "openai",
+            "generateText": "gemini",
             "generateJSON": "claude",
             "getModelInfo" : "gemini",
-            "healthCheck":"gemini"
+            "healthCheck":"openai"
         }
 
     def execute(self, task, data):
@@ -35,11 +39,11 @@ class AIOrchestrator:
             if provider_name is None:
                 logger.error("Invalid Task")
 
-                return {
-                    "success": False,
-                    "provider":None,
-                    "error":"Invalid Task"
-                }
+                return AIResponse(
+                        success=False,
+                        provider_name=None,
+                        error="Invalid Task"
+                    )
             
             provider = self.providers.get(provider_name)
 
@@ -47,29 +51,37 @@ class AIOrchestrator:
 
                 logger.error("Provider not found")
 
-                return {
-                    "success": False,
-                    "provider": provider_name,
-                    "error": "Provider not found"
-                }
-
+                return  AIResponse(
+                    success=False,
+                    provider_name=provider_name,
+                    error="Provider not found"
+                )
+            
             logger.info(f"Selected Provider : {provider_name}")
 
                 
 
             method = getattr(provider,task)
-            response = method(data)
+
+            start = time.time()
+            output = method(data)
+            end = time.time()
 
             logger.info("Execution completed")
 
-            return response
+            return AIResponse(
+                success = True,
+                provider_name = provider_name,
+                output = output,
+                execution_time=end-start
+            )
 
         except Exception as e:
 
             logger.error(str(e))
 
-            return {
-                "success": False,
-                "provider": provider_name,
-                "error": str(e)
-            }
+            return AIResponse(
+                success=False,
+                provider_name=provider_name,
+                error=str(e)
+            )

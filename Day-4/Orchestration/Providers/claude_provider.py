@@ -16,7 +16,7 @@ class ClaudeProvider(BaseAIProvider):
         )
 
     def generateText(self, prompt: str):
-        start = time.time()
+        
 
         response = self.client.messages.create(
             model = "claude-sonnet-4-20250514",
@@ -28,15 +28,10 @@ class ClaudeProvider(BaseAIProvider):
                 }
             ]
         )
-        return {
-            "success": True,
-            "provider": "Claude",
-            "output": response.content[0].text,
-            "execution_time": round(time.time() - start, 4)
-        }
+        return response.content[0].text
 
     def generateJSON(self,prompt: str):
-        start = time.time()
+        
 
         response = self.client.messages.create(
             model = "claude-sonnet-4-20250514",
@@ -56,22 +51,11 @@ class ClaudeProvider(BaseAIProvider):
                 }
             ]
         )
-        return {
-            "success": True,
-            "provider": "Claude",
-            "output": json.loads(response.content[0].text),
-            "execution_time": round(time.time() - start, 4)
-        }
+        return json.loads(response.content[0].text)
 
     def getModelInfo(self,data=None):
         pass
 
     def healthCheck(self,data=None):
-        start = time.time()
-
-        return {
-            "success": True,
-            "provider": "Claude",
-            "output": "Claude is healthy",
-            "execution_time": round(time.time() - start, 4)
-        }
+        
+        return "Claude is healthy"

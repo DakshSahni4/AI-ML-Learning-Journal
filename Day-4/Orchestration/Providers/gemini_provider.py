@@ -17,22 +17,16 @@ class GeminiProvider(BaseAIProvider):
         )
 
     def generateText(self, prompt: str):
-        start = time.time()
+        
 
         response = self.client.models.generate_content(
             model = "gemini-2.5-flash",
             contents=prompt
         )
 
-        return {
-            "success": True,
-            "provider": "Gemini",
-            "output": response.text,
-            "execution_time": round(time.time() - start, 4)
-        }
+        return response.text
 
     def generateJSON(self,prompt: str):
-        start = time.time()
 
         response = self.client.models.generate_content(
             model = "gemini-2.5-flash",
@@ -44,13 +38,7 @@ class GeminiProvider(BaseAIProvider):
         "response_mime_type": "application/json"
     }
         )
-        
-        return {
-            "success": True,
-            "provider": "Gemini",
-            "output": json.loads(response.text),
-            "execution_time": round(time.time() - start, 4)
-        }
+        return json.loads(response.text)
 
     def getModelInfo(self,data=None):
         pass
@@ -59,9 +47,4 @@ class GeminiProvider(BaseAIProvider):
     def healthCheck(self,data=None):
         start = time.time()
 
-        return {
-            "success": True,
-            "provider": "Gemini",
-            "output": "Gemini is healthy",
-            "execution_time": round(time.time() - start, 4)
-        }
+        return "Gemini is healthy"

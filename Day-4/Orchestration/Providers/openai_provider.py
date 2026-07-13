@@ -19,21 +19,14 @@ class OpenAIProvider(BaseAIProvider):
         )
 
     def generateText(self, prompt: str):
-        start = time.time()
 
         response = self.client.responses.create(
             model = "gpt-5",
             input = prompt
         )
-        return {
-            "success": True,
-            "provider": "OpenAI",
-            "output": response.output_text,
-            "execution_time": round(time.time() - start, 4)
-        }
+        return response.output_text
 
     def generateJSON(self,prompt: str):
-        start = time.time()
 
         response = self.client.responses.create(
             model = "gpt-5",
@@ -48,22 +41,12 @@ class OpenAIProvider(BaseAIProvider):
                 }
             }
         )
-        return {
-            "success": True,
-            "provider": "OpenAI",
-            "output": json.loads(response.output_text),
-            "execution_time": round(time.time() - start, 4)
-        }
+        return json.loads(response.output_text)
 
     def getModelInfo(self,data=None):
         pass
     
     def healthCheck(self,data=None):
-        start = time.time()
 
-        return {
-            "success": True,
-            "provider": "OpenAI",
-            "output": "OpenAI is healthy",
-            "execution_time": round(time.time() - start, 4)
-        }
+
+        return "OpenAI is healthy"
