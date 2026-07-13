@@ -47,6 +47,8 @@ class PromptEngine:
         if os.path.exists(file_path):
             with open(file_path,'r') as file:
                 data = json.load(file)
+                if version in data:
+                    raise ValueError(f"Version '{version}' already exists.")
         else:
             data ={}
         
