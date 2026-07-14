@@ -39,3 +39,12 @@ class ProviderCapability:
     supportsStructuredOutput:bool
     maxContext:int
     supportsFunctionCalling: bool
+
+@dataclass
+class CostEstimate:
+    model: str
+    prompt_tokens: int
+    completion_tokens: int
+    input_cost: float
+    output_cost: float
+    total_cost: float
