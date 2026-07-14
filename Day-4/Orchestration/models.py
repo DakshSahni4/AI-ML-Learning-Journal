@@ -30,3 +30,12 @@ class TaskConfig:
     validate:bool
     validate_json: bool
     fallback_provider:str | None = None
+
+@dataclass
+class ProviderCapability:
+    provider: str
+    supportsVision:bool
+    supportsStreaming: bool
+    supportsStructuredOutput:bool
+    maxContext:int
+    supportsFunctionCalling: bool
