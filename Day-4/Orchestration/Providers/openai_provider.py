@@ -1,6 +1,7 @@
 import time
 import json
 from Providers.base_provider import BaseAIProvider
+from Config.config import Config
 
 from openai import OpenAI
 
@@ -15,7 +16,7 @@ load_dotenv()
 class OpenAIProvider(BaseAIProvider):
     def __init__(self):
         self.client = OpenAI(
-            api_key=os.getenv("OPENAI_API_KEY")
+            api_key=Config.OPENAI_API_KEY
         )
 
     def generateText(self, prompt: str):

@@ -15,12 +15,14 @@ from models import ExecutionLog
 
 from logger import logger
 
+from Config.config import Config
 
 class AIOrchestrator:
 
     def __init__(self):
         self.tasks = TaskRegistry()
-        self.max_retries = 3
+        
+        self.max_retries = Config.MAX_RETRIES
         self.providers = {
             "openai": OpenAIProvider(),
             "claude": ClaudeProvider(),

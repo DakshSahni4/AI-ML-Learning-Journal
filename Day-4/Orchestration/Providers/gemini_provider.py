@@ -1,6 +1,8 @@
 import time
 import json
+
 from Providers.base_provider import BaseAIProvider
+from Config.config import Config
 
 from google import genai
 from dotenv import load_dotenv
@@ -13,7 +15,7 @@ class GeminiProvider(BaseAIProvider):
 
     def __init__(self):
         self.client = genai.Client(
-            api_key = os.getenv("GEMINI_API_KEY")
+            api_key = Config.GEMINI_API_KEY
         )
 
     def generateText(self, prompt: str):

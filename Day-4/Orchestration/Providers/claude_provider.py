@@ -2,6 +2,7 @@ import time
 import json
 
 from Providers.base_provider import BaseAIProvider
+from Config.config import Config
 
 from anthropic import Anthropic
 from dotenv import load_dotenv
@@ -12,7 +13,7 @@ load_dotenv()
 class ClaudeProvider(BaseAIProvider):
     def __init__(self):
         self.client = Anthropic(
-            api_key = os.getenv("ANTHROPIC_API_KEY")
+            api_key = Config.ANTHROPIC_API_KEY
         )
 
     def generateText(self, prompt: str):
