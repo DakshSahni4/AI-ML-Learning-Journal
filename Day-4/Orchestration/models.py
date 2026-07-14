@@ -22,4 +22,11 @@ class ExecutionLog:
 class ValidationResult:
     valid:bool
     errors: list[str] = field(default_factory = list)
-    
+
+@dataclass
+class TaskConfig:
+    provider:str
+    retry:bool
+    validate:bool
+    validate_json: bool
+    fallback_provider:str | None = None

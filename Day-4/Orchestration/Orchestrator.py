@@ -8,6 +8,7 @@ from Providers.gemini_provider import GeminiProvider
 
 from ExecutionLogger.execution_logger import ExecutionLogger
 from ResponseValidator.validator import ResponseValidator
+from taskRegistry import TaskRegistry
 
 from models import AIResponse
 from models import ExecutionLog
@@ -18,18 +19,12 @@ from logger import logger
 class AIOrchestrator:
 
     def __init__(self):
-
+        self.tasks = TaskRegistry()
+        
         self.providers = {
             "openai": OpenAIProvider(),
             "claude": ClaudeProvider(),
             "gemini": GeminiProvider()
-        }
-
-        self.mapping = {
-            "generateText": "gemini",
-            "generateJSON": "claude",
-            "getModelInfo" : "gemini",
-            "healthCheck":"openai"
         }
         self.execution_logger  = ExecutionLogger()
         self.validator = ResponseValidator()
@@ -39,12 +34,12 @@ class AIOrchestrator:
         logger.info("Request received")
 
         try:
+            
+            config = self.tasks.getTask(task)
+            
+            
 
-            # provider = self.providers.get(provider_name.lower())
-
-            provider_name = self.mapping.get(task)
-
-            if provider_name is None:
+            if config is None:
                 logger.error("Invalid Task")
                 log = ExecutionLog(
                         execution_id=str(uuid.uuid4()),
@@ -62,7 +57,7 @@ class AIOrchestrator:
                         provider_name=None,
                         error="Invalid Task"
                     )
-            
+            provider_name = config.provider
             provider = self.providers.get(provider_name)
 
             if provider is None:
