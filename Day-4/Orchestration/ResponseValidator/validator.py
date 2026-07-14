@@ -41,15 +41,18 @@ class ResponseValidator:
             return ["Response is empty"]
         return []
 
-    def validateJSON(self,response):
+    def validateJSON(self, response):
+
         try:
-            temp = json.load(response)
+            if isinstance(response, dict):
+                return []
+            json.loads(response)
 
             return []
 
         except json.JSONDecodeError:
-            return ["Invalid JSON"]
 
+            return ["Invalid JSON"]
 
 
     def validateLength(self,response):

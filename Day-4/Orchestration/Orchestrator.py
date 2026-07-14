@@ -20,7 +20,7 @@ class AIOrchestrator:
 
     def __init__(self):
         self.tasks = TaskRegistry()
-        
+        self.max_retries = 3
         self.providers = {
             "openai": OpenAIProvider(),
             "claude": ClaudeProvider(),
@@ -28,7 +28,7 @@ class AIOrchestrator:
         }
         self.execution_logger  = ExecutionLogger()
         self.validator = ResponseValidator()
-
+  
     def execute(self, task, data):
 
         logger.info("Request received")
@@ -36,8 +36,6 @@ class AIOrchestrator:
         try:
             
             config = self.tasks.getTask(task)
-            
-            
 
             if config is None:
                 logger.error("Invalid Task")
@@ -84,18 +82,25 @@ class AIOrchestrator:
             logger.info(f"Selected Provider : {provider_name}")
 
                 
-
-            method = getattr(provider,task)
-
             start = time.time()
-            output = method(data)
+
+            if config.retry:
+
+                output = self.execute_with_retry(data,config,task)
+                
+            else:
+                method = getattr(provider,task)
+
+                output = method(data)
+
+
             end = time.time()
 
-            if task in ("generateText", "generateJSON"):
+            if config.validate:
 
                 validation = self.validator.validate(
                     output,
-                    validate_json=(task == "generateJSON")
+                    validate_json= config.validate_json
                 )
 
                 if not validation.valid:
@@ -179,3 +184,92 @@ class AIOrchestrator:
                 provider_name=provider_name,
                 error=str(e)
             )
+
+    def execute_with_retry(self,data,config,task):
+
+        provider = self.providers.get(config.provider)
+        method = getattr(provider,task)
+
+        for attempt in range(self.max_retries):
+            try:
+                return method(data)
+            except Exception as e:
+                logger.error(f"attempt {attempt +1 } is failed: {e}")
+                log = ExecutionLog(
+                execution_id=str(uuid.uuid4()),
+                timestamp=datetime.now().isoformat(),
+                module=task,
+                provider=config.provider,
+                execution_time=0,
+                success=False,
+                error=f"Retry {attempt + 1}: {str(e)}"
+                )
+
+                self.execution_logger.log(log)
+
+                if attempt <self.max_retries-1:
+                    delay = 2**attempt
+                    logger.info(f"Retrying in {delay} seconds")
+
+                    time.sleep(delay)
+
+
+        logger.warning(
+                    f"{config.provider} failed after {self.max_retries} retries."
+                )
+
+            
+        if config.fallback_provider:
+            #Fallback
+
+                logger.info(
+                    f"Switching to fallback provider: {config.fallback_provider}"
+                )
+
+                fallback_provider = self.providers.get(
+                    config.fallback_provider
+                )
+
+                if fallback_provider is None:
+
+                    raise Exception(
+                        f"Fallback provider '{config.fallback_provider}' not found."
+                    )
+
+                fallback_method = getattr(
+                    fallback_provider,
+                    task
+                )
+
+                try:
+
+                    return fallback_method(data)
+
+                except Exception as e:
+
+                    logger.error(
+                        f"Fallback provider '{config.fallback_provider}' failed: {e}"
+                    )
+
+                    log = ExecutionLog(
+                        execution_id=str(uuid.uuid4()),
+                        timestamp=datetime.now().isoformat(),
+                        module=task,
+                        provider=config.fallback_provider,
+                        execution_time=0,
+                        success=False,
+                        error=f"Fallback Failed: {str(e)}"
+                    )
+
+                    self.execution_logger.log(log)
+
+                    raise Exception(
+                        f"Both '{config.provider}' and '{config.fallback_provider}' failed."
+                    )
+
+            # No fallback configured
+        raise Exception(
+                f"{config.provider} failed after {self.max_retries} retries and no fallback provider is configured."
+            )   
+        
+
