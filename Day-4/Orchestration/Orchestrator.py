@@ -37,9 +37,9 @@ class AIOrchestrator:
 
         try:
             
-            config = self.tasks.getTask(task)
+            taskconfig = self.tasks.getTask(task)
 
-            if config is None:
+            if taskconfig is None:
                 logger.error("Invalid Task")
                 log = ExecutionLog(
                         execution_id=str(uuid.uuid4()),
@@ -57,7 +57,7 @@ class AIOrchestrator:
                         provider_name=None,
                         error="Invalid Task"
                     )
-            provider_name = config.provider
+            provider_name = taskconfig.provider
             provider = self.providers.get(provider_name)
 
             if provider is None:
@@ -86,9 +86,9 @@ class AIOrchestrator:
                 
             start = time.time()
 
-            if config.retry:
+            if taskconfig.retry:
 
-                output = self.execute_with_retry(data,config,task)
+                output = self.execute_with_retry(data,taskconfig,task)
                 
             else:
                 method = getattr(provider,task)
@@ -98,11 +98,11 @@ class AIOrchestrator:
 
             end = time.time()
 
-            if config.validate:
+            if taskconfig.validate:
 
                 validation = self.validator.validate(
                     output,
-                    validate_json= config.validate_json
+                    validate_json= taskconfig.validate_json
                 )
 
                 if not validation.valid:
@@ -187,9 +187,9 @@ class AIOrchestrator:
                 error=str(e)
             )
 
-    def execute_with_retry(self,data,config,task):
+    def execute_with_retry(self,data,taskconfig,task):
 
-        provider = self.providers.get(config.provider)
+        provider = self.providers.get(taskconfig.provider)
         method = getattr(provider,task)
 
         for attempt in range(self.max_retries):
@@ -201,7 +201,7 @@ class AIOrchestrator:
                 execution_id=str(uuid.uuid4()),
                 timestamp=datetime.now().isoformat(),
                 module=task,
-                provider=config.provider,
+                provider=taskconfig.provider,
                 execution_time=0,
                 success=False,
                 error=f"Retry {attempt + 1}: {str(e)}"
@@ -217,25 +217,25 @@ class AIOrchestrator:
 
 
         logger.warning(
-                    f"{config.provider} failed after {self.max_retries} retries."
+                    f"{taskconfig.provider} failed after {self.max_retries} retries."
                 )
 
             
-        if config.fallback_provider:
+        if taskconfig.fallback_provider:
             #Fallback
 
                 logger.info(
-                    f"Switching to fallback provider: {config.fallback_provider}"
+                    f"Switching to fallback provider: {taskconfig.fallback_provider}"
                 )
 
                 fallback_provider = self.providers.get(
-                    config.fallback_provider
+                    taskconfig.fallback_provider
                 )
 
                 if fallback_provider is None:
 
                     raise Exception(
-                        f"Fallback provider '{config.fallback_provider}' not found."
+                        f"Fallback provider '{taskconfig.fallback_provider}' not found."
                     )
 
                 fallback_method = getattr(
@@ -244,20 +244,22 @@ class AIOrchestrator:
                 )
 
                 try:
+                    result = fallback_method(data)
+                    taskconfig.provider = taskconfig.fallback_provider
 
-                    return fallback_method(data)
+                    return result
 
                 except Exception as e:
 
                     logger.error(
-                        f"Fallback provider '{config.fallback_provider}' failed: {e}"
+                        f"Fallback provider '{taskconfig.fallback_provider}' failed: {e}"
                     )
 
                     log = ExecutionLog(
                         execution_id=str(uuid.uuid4()),
                         timestamp=datetime.now().isoformat(),
                         module=task,
-                        provider=config.fallback_provider,
+                        provider=taskconfig.fallback_provider,
                         execution_time=0,
                         success=False,
                         error=f"Fallback Failed: {str(e)}"
@@ -266,12 +268,12 @@ class AIOrchestrator:
                     self.execution_logger.log(log)
 
                     raise Exception(
-                        f"Both '{config.provider}' and '{config.fallback_provider}' failed."
+                        f"Both '{taskconfig.provider}' and '{taskconfig.fallback_provider}' failed."
                     )
 
             # No fallback configured
         raise Exception(
-                f"{config.provider} failed after {self.max_retries} retries and no fallback provider is configured."
+                f"{taskconfig.provider} failed after {self.max_retries} retries and no fallback provider is taskconfigured."
             )   
         
 

@@ -1,77 +1,65 @@
 [
     {
-        "execution_id": "1a9f317f-d2cf-41e4-b116-5d1d13c07507",
-        "timestamp": "2026-07-13 16:20:13.918334",
-        "module": "generateText",
-        "provider": "gemini",
-        "model": "gemini-2.5-flash",
-        "execution_time": 0.82,
-        "success": true,
-        "error": null
-    },
-    {
-        "execution_id": "9b7547ed-4215-4ccf-88e9-a2272175e807",
-        "timestamp": "2026-07-13 16:28:13.411763",
-        "module": "generateText",
-        "provider": "gemini",
-        "model": "gemini-2.5-flash",
-        "execution_time": 0.82,
-        "success": true,
-        "error": null
-    },
-    {
-        "execution_id": "0e436386-9952-4d46-bf0f-c6e39b189d38",
-        "timestamp": "2026-07-13 16:57:28.479322",
-        "module": "generateText",
-        "provider": "gemini",
-        "model": "gemini-2.5-flash",
-        "execution_time": 0.82,
-        "success": true,
-        "error": null
-    },
-    {
-        "execution_id": "21c78f4e-33fe-49f4-bd36-eba3e1e27035",
-        "timestamp": "2026-07-13T16:58:34.514865",
-        "module": "generateText",
-        "provider": "gemini",
-        "execution_time": 0,
-        "success": false,
-        "error": "'ExecutionLogger' object is not callable"
-    },
-    {
-        "execution_id": "bdaa8654-257d-4287-88b6-e7a8092b261f",
-        "timestamp": "2026-07-13T16:58:34.518248",
-        "module": "getModelInfo",
-        "provider": "gemini",
-        "execution_time": 0,
-        "success": false,
-        "error": "'ExecutionLogger' object is not callable"
-    },
-    {
-        "execution_id": "51967802-84e9-4ca6-9b82-0b0202ae867e",
-        "timestamp": "2026-07-13T16:58:35.215898",
+        "execution_id": "1e1b9f4b-af48-4b59-8956-6c0f53abd65f",
+        "timestamp": "2026-07-15T11:37:55.863801",
         "module": "generateJSON",
         "provider": "claude",
         "execution_time": 0,
         "success": false,
-        "error": "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CcyygR1AXtmhoZr6yz5QS'}"
+        "error": "Retry 2: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011Cd3LrHYvfEwgoTdGVosBV'}"
     },
     {
-        "execution_id": "1116415b-2d6e-4e81-8ec2-eff2b67a4497",
-        "timestamp": "2026-07-13T16:58:35.219811",
-        "module": "healthCheck",
+        "execution_id": "ce63fea3-a116-4ba5-99e0-6575473d9ec7",
+        "timestamp": "2026-07-15T11:37:58.211732",
+        "module": "generateText",
+        "provider": "gemini",
+        "execution_time": 0,
+        "success": false,
+        "error": "Retry 3: 403 PERMISSION_DENIED. {'error': {'code': 403, 'message': 'Lightning dunning decision is deny for project: projects/921351655884', 'status': 'PERMISSION_DENIED'}}"
+    },
+    {
+        "execution_id": "1bc514e7-e9ce-4525-93a6-e4637eeaa791",
+        "timestamp": "2026-07-15T11:37:58.519309",
+        "module": "generateJSON",
+        "provider": "claude",
+        "execution_time": 0,
+        "success": false,
+        "error": "Retry 3: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011Cd3LrU2xW91dxzDZE2JiS'}"
+    },
+    {
+        "execution_id": "36c54fe7-80fe-4a13-85d3-c93e6dd95f0a",
+        "timestamp": "2026-07-15T11:37:58.824959",
+        "module": "generateJSON",
+        "provider": "gemini",
+        "execution_time": 0,
+        "success": false,
+        "error": "Fallback Failed: 403 PERMISSION_DENIED. {'error': {'code': 403, 'message': 'Lightning dunning decision is deny for project: projects/921351655884', 'status': 'PERMISSION_DENIED'}}"
+    },
+    {
+        "execution_id": "c0193a7c-f97f-45aa-9e1e-ec0f3d380b52",
+        "timestamp": "2026-07-15T11:37:58.827927",
+        "module": "generateJSON",
+        "provider": "claude",
+        "execution_time": 0,
+        "success": false,
+        "error": "Both 'claude' and 'gemini' failed."
+    },
+    {
+        "execution_id": "2328f79b-fa61-438d-915a-124ff7146ccc",
+        "timestamp": "2026-07-15T11:38:05.706498",
+        "module": "generateText",
         "provider": "openai",
         "execution_time": 0,
         "success": false,
-        "error": "'ExecutionLogger' object is not callable"
+        "error": "Fallback Failed: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}"
     },
     {
-        "execution_id": "9847b5d6-6086-4994-b2af-312498dbda53",
-        "timestamp": "2026-07-13T16:58:35.244360",
-        "module": "Converse",
-        "provider": "Unknown",
+        "execution_id": "d41f608f-d57c-46d9-a7e3-5aa80626890c",
+        "timestamp": "2026-07-15T11:38:05.713076",
+        "module": "generateText",
+        "provider": "gemini",
         "execution_time": 0,
         "success": false,
-        "error": "Invalid Task"
+        "error": "Both 'gemini' and 'openai' failed."
     }
 ]

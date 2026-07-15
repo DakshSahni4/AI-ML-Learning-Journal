@@ -1,4 +1,5 @@
 from dataclasses import dataclass,field
+from enum import Enum
 
 @dataclass
 class AIResponse:
@@ -48,3 +49,17 @@ class CostEstimate:
     input_cost: float
     output_cost: float
     total_cost: float
+
+class RequestStatus(Enum):
+    PENDING = "Pending"
+    RUNNING = "Running"
+    COMPLETED = "Completed"
+    FAILED = "Failed"
+
+@dataclass
+class AIRequest:
+    request_id:str
+    task: str
+    data:dict
+    status:RequestStatus
+    result = Any = None
