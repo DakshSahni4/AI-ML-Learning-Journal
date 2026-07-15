@@ -5,6 +5,11 @@ from Orchestrator import AIOrchestrator
 from models import ExecutionLog
 from ExecutionLogger.execution_logger import ExecutionLogger
 from ResponseValidator.validator import ResponseValidator
+
+from PromptEngine.prompt_engine import PromptEngine
+from RequestQueue.request_queue import RequestQueue
+
+
 def main():
 
     orchestrator = AIOrchestrator()
@@ -82,8 +87,34 @@ def debug():
     print(logger.filterByStatus(True))
     print(logger.filterByProvider("gemini"))
 
+def final():
+
+    prompt_engine = PromptEngine()
+    orchestrator = AIOrchestrator()
+    queue = RequestQueue(orchestrator)
+
+    client_request = {
+        "topic": "Artificial Intelligence"
+    }
+
+    prompt = prompt_engine.render(
+        category="content",
+        version="v1",
+        prompt_name="blog",
+        variables=client_request
+    )
+
+    queue.AddRequest(
+        task="generateText",
+        data=prompt
+    )
+
+    queue.ProcessQueue()
+    queue.printSummary()
+
+
 if __name__ == "__main__":
-    main()
+    final()
 
 
 
