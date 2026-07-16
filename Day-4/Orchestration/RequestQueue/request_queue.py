@@ -10,11 +10,12 @@ class RequestQueue:
         self.queue = deque()
         self.history = []
 
-    def AddRequest(self,task,data):
+    def AddRequest(self,task,data,provider):
 
         request = AIRequest(
             request_id=str(uuid.uuid4()),
             task = task,
+            provider = provider,
             data = data,
             status = RequestStatus.PENDING
         )
@@ -31,7 +32,7 @@ class RequestQueue:
         print(f"Running : {request.request_id} | {request.task}")
         try:
 
-            response = self.orchestrator.execute(request.task,request.data)
+            response = self.orchestrator.execute(task=request.task,data = request.data,provider = request.provider)
 
             request.result = response
 

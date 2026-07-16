@@ -106,5 +106,50 @@
         "execution_time": 0,
         "success": false,
         "error": "Both 'gemini' and 'openai' failed."
+    },
+    {
+        "execution_id": "42242a4c-df03-4e6b-b71d-984e51072f88",
+        "timestamp": "2026-07-15T16:45:08.365475",
+        "module": "generateText",
+        "provider": "gemini",
+        "execution_time": 0,
+        "success": false,
+        "error": "Retry 1: 403 PERMISSION_DENIED. {'error': {'code': 403, 'message': 'Lightning dunning decision is deny for project: projects/921351655884', 'status': 'PERMISSION_DENIED'}}"
+    },
+    {
+        "execution_id": "e67f6c4a-3210-4a7a-be12-32a04d69dcb8",
+        "timestamp": "2026-07-15T16:45:09.608549",
+        "module": "generateText",
+        "provider": "gemini",
+        "execution_time": 0,
+        "success": false,
+        "error": "Retry 2: 403 PERMISSION_DENIED. {'error': {'code': 403, 'message': 'Lightning dunning decision is deny for project: projects/921351655884', 'status': 'PERMISSION_DENIED'}}"
+    },
+    {
+        "execution_id": "58515bc9-d870-4743-b4b7-fe7f8bbee7e5",
+        "timestamp": "2026-07-15T16:45:11.839141",
+        "module": "generateText",
+        "provider": "gemini",
+        "execution_time": 0,
+        "success": false,
+        "error": "Retry 3: 403 PERMISSION_DENIED. {'error': {'code': 403, 'message': 'Lightning dunning decision is deny for project: projects/921351655884', 'status': 'PERMISSION_DENIED'}}"
+    },
+    {
+        "execution_id": "b0b763af-d1fc-43c2-9251-a47334612d53",
+        "timestamp": "2026-07-15T16:45:18.454649",
+        "module": "generateText",
+        "provider": "openai",
+        "execution_time": 0,
+        "success": false,
+        "error": "Fallback Failed: Error code: 429 - {'error': {'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.', 'type': 'insufficient_quota', 'param': None, 'code': 'insufficient_quota'}}"
+    },
+    {
+        "execution_id": "62028d5e-dd78-4230-886a-da3d9f4770e6",
+        "timestamp": "2026-07-15T16:45:18.456650",
+        "module": "generateText",
+        "provider": "claude",
+        "execution_time": 0,
+        "success": false,
+        "error": "Both 'gemini' and 'openai' failed."
     }
 ]

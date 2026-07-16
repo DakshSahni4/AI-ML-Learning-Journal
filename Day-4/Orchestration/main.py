@@ -8,7 +8,7 @@ from ResponseValidator.validator import ResponseValidator
 
 from PromptEngine.prompt_engine import PromptEngine
 from RequestQueue.request_queue import RequestQueue
-
+from intent_router import IntentRouter
 
 def main():
 
@@ -88,29 +88,33 @@ def debug():
     print(logger.filterByProvider("gemini"))
 
 def final():
-
+    router = IntentRouter()
     prompt_engine = PromptEngine()
     orchestrator = AIOrchestrator()
     queue = RequestQueue(orchestrator)
 
-    client_request = {
-        "topic": "Artificial Intelligence"
-    }
+    user_prompt = "Write a blog about Artificial Intelligence."
+
+    intent = router.route(user_prompt)
 
     prompt = prompt_engine.render(
-        category="content",
+        category=intent.category.lower(),
         version="v1",
         prompt_name="blog",
-        variables=client_request
+        variables={
+            "topic": "Artificial Intelligence"
+        }
     )
 
     queue.AddRequest(
         task="generateText",
+        provider=intent.provider,
         data=prompt
     )
 
     queue.ProcessQueue()
     queue.printSummary()
+
 
 
 if __name__ == "__main__":

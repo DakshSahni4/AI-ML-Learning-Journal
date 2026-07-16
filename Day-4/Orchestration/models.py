@@ -60,6 +60,16 @@ class RequestStatus(Enum):
 class AIRequest:
     request_id:str
     task: str
+    provider:str
     data:dict
     status:RequestStatus
     result = Any = None
+
+@dataclass
+class IntentResult:
+
+    category: str
+
+    provider: str
+
+    confidence: float

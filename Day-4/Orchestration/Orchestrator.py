@@ -31,7 +31,7 @@ class AIOrchestrator:
         self.execution_logger  = ExecutionLogger()
         self.validator = ResponseValidator()
   
-    def execute(self, task, data):
+    def execute(self, task, data,provider=None):
 
         logger.info("Request received")
 
@@ -57,7 +57,8 @@ class AIOrchestrator:
                         provider_name=None,
                         error="Invalid Task"
                     )
-            provider_name = taskconfig.provider
+            
+            provider_name = provider or taskconfig.provider
             provider = self.providers.get(provider_name)
 
             if provider is None:
